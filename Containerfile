@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN git clone "$MINT_TOOLCHAIN_REPO" /src/mint \
  && cd /src/mint \
  && git checkout "$MINT_TOOLCHAIN_REF" \
- && sed -i -E 's/CC="gcc -arch \$\(ARCH\)"/CC="gcc"/g; s/CXX="g\+\+ -arch \$\(ARCH\)"/CXX="g++"/g' Makefile.* \
+ && sed -i -E 's/CC="gcc -arch \$\(ARCH\)"/CC="gcc"/g; s/CXX="g\+\+ -arch \$\(ARCH\)"/CXX="g++"/g; s/ -Wno-error=null-pointer-arithmetic//g' Makefile.* \
  && (make PREFIX=/opt/cross-mint all || (find /src/mint/compile -name config.log -print -exec cat '{}' ';'; exit 1))
 
 FROM debian:13-slim
