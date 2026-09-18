@@ -2,39 +2,35 @@
 
 Standard containerized Atari 68k development environment for Ploos-AS projects.
 
-## Purpose
+## M2 — TOS application toolchain
 
-`atari-dev` is the canonical build and tooling environment for Atari ST-family software projects.
+M2 uses the **FreeMiNT m68k-atari-mint GCC toolchain** as the canonical TOS application compiler. The Linux container consumes the maintained Ubuntu packages published by Vincent Rivière's cross-mint PPA rather than attempting to build the historical macOS-oriented helper repository in CI.
 
-M2 adopts the **m68k-atari-mint** ABI/toolchain family as the canonical Atari application target. This is the established GCC target used to produce TOS executables such as `.PRG`, `.TOS` and `.TTP`. The toolchain is built from source by the container build; Atari TOS ROM images are neither required for compilation nor distributed here.
+The resulting toolchain provides the `m68k-atari-mint-gcc` target used for Atari ST/TOS software. FreeMiNT maintains the corresponding GCC and binutils projects. citeturn2search1turn2search4
 
-## Milestones
+### Qualification
 
-- **M0 — Foundation — PASS**
-- **M1 — generic 68000 cross-toolchain baseline — PASS**
-- **M2 — TOS application toolchain contract — IMPLEMENTED / CI qualification pending**
-
-## M2 contract
-
-Canonical compiler prefix:
-
-```
-m68k-atari-mint-
+```sh
+docker build -t atari-dev:m2 -f Containerfile .
+docker run --rm -v "$PWD:/work" atari-dev:m2 make clean check
 ```
 
-The M2 qualification program is a console TOS application and must produce `build/HELLO.TOS`. Consumer Atari projects should build inside this environment rather than install private cross-toolchains.
+The qualification artifact is:
 
-The container pins the cross-toolchain source repository to an explicit revision through `MINT_TOOLCHAIN_REF`. Updating that revision is an intentional infrastructure change.
+```
+build/HELLO.TOS
+```
 
-## Relationship to atari-runtime
+No TOS ROM is required to compile it and no proprietary Atari ROM material is included.
 
-`atari-dev` builds the TOS artifact. [Ploos-AS/atari-runtime](https://github.com/Ploos-AS/atari-runtime) executes the same artifact with Hatari.
+## Licensing
 
-Compilation and CI do not require proprietary Atari material. Runtime qualification can use a user-supplied legal TOS image; later we can additionally qualify against a redistributable open TOS implementation where appropriate.
+This repository's own software/infrastructure follows the Ploos-AS MIT standard. Third-party toolchain packages retain their own upstream licences and notices; they are not relicensed as MIT.
 
-## Ploos-AS standards
+Documentation follows CC BY-SA 4.0 where applicable.
 
-- Software, ROM and firmware: MIT by default unless inherited licensing applies.
-- Documentation and educational material: CC BY-SA 4.0 by default.
-- Markdown is canonical documentation source.
-- Proprietary TOS/ROM images must not be committed or embedded in the container.
+## Status
+
+- M0 — Foundation — PASS
+- M1 — 68000 toolchain baseline — PASS
+- M2 — TOS application toolchain — **IMPLEMENTED; GitHub qualification pending**
