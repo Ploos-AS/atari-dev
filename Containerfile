@@ -51,7 +51,9 @@ RUN set -eux; \
     find /tmp/mintlib-extract -maxdepth 4 -type d | sort | head -n 100; \
     echo "stdio.h locations:"; \
     find /tmp/mintlib-extract -name stdio.h -print; \
-    cp -a /tmp/mintlib-extract/. /; \
+    mkdir -p /usr/m68k-atari-mintelf/sys-root; \
+    cp -a /tmp/mintlib-extract/. /usr/m68k-atari-mintelf/sys-root/; \
+    test -f /usr/m68k-atari-mintelf/sys-root/usr/include/stdio.h; \
     echo "GCC sysroot: $(m68k-atari-mintelf-gcc -print-sysroot)"; \
     echo "GCC search dirs:"; m68k-atari-mintelf-gcc -print-search-dirs; \
     printf "" | m68k-atari-mintelf-gcc -m68000 -v -E -x c - >/tmp/gcc-preprocess.out 2>/tmp/gcc-preprocess.err || true; \
