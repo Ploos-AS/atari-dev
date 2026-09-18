@@ -6,7 +6,7 @@ ARG MINT_TOOLCHAIN_REF=master
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     autoconf automake bison build-essential ca-certificates curl flex gawk git \
-    libgmp-dev libmpc-dev libmpfr-dev libtool lzip make patch pkg-config \
+    libgmp-dev libmpc-dev libmpfr-dev libtool libfl-dev zlib1g-dev lzip make patch pkg-config \
     python3 texinfo wget xz-utils && rm -rf /var/lib/apt/lists/*
 
 RUN git clone "$MINT_TOOLCHAIN_REPO" /src/mint \
