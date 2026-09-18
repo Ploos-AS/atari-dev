@@ -5,6 +5,7 @@ ARG BASE_URL=https://tho-otto.de/download/mint
 ARG BINUTILS=binutils-2.45-mintelf-20250812-bin-linux64.tar.xz
 ARG GCC=gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz
 ARG MINTBIN=mintbin-0.4-mintelf-bin-linux64.tar.xz
+ARG MINTLIB_URL=https://atari.joska.no/snapshots/mintlib/mintlib-mintelf-latest.tar.bz2
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl file make xz-utils tar \
@@ -35,7 +36,15 @@ RUN set -eux; \
     /tmp/mintbin/configure --prefix=/usr/m68k-atari-mintelf; \
     make; \
     make install; \
-    rm -rf /tmp/mintbin /var/lib/apt/lists/*
+    rm -rf /tmp/mintbin /tmp/mintbin-build /var/lib/apt/lists/*
+
+
+# MiNTLib is the standard libc for FreeMiNT. Upstream publishes a dedicated
+# mintelf snapshot; install it into the cross-toolchain prefix.
+RUN set -eux; \
+    curl --fail --location --show-error --silent -o /tmp/mintlib.tar.bz2 "$MINTLIB_URL"; \
+    tar -C /usr/m68k-atari-mintelf -xjf /tmp/mintlib.tar.bz2; \
+    rm -f /tmp/mintlib.tar.bz2
 
 ENV PATH="/usr/m68k-atari-mintelf/bin:/usr/m68k-atari-mintelf/usr/bin:${PATH}"
 
