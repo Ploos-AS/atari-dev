@@ -28,3 +28,12 @@ toolchain-info:
 
 clean:
 	rm -rf $(BUILD)
+
+PROBE := $(BUILD)/MINIMAL.PRG
+
+$(PROBE): tests/minimal-tos.S | $(BUILD)
+	$(CC) -m68000 -Os -o $@ $<
+
+probe: $(PROBE)
+	file $(PROBE)
+	@printf 'Minimal Atari runtime probe: PASS\n'
