@@ -14,7 +14,7 @@ $(TARGET): tests/hello-tos.c | $(BUILD)
 
 check: $(TARGET)
 	test -s $(TARGET)
-	file $(TARGET)
+	file $(TARGET) | grep -qi 'Atari ST\|m68k\|68000'
 	@printf 'M2 atari-dev TOS artifact: PASS\n'
 
 toolchain-info:
