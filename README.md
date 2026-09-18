@@ -4,7 +4,7 @@ Standard containerized Atari 68k development environment for Ploos-AS projects.
 
 ## M2 — TOS application toolchain
 
-M2 uses the **FreeMiNT m68k-atari-mint GCC toolchain** as the canonical TOS application compiler. The Linux container consumes the maintained Ubuntu packages published by Vincent Rivière's cross-mint PPA rather than attempting to build the historical macOS-oriented helper repository in CI.
+M2 uses the **FreeMiNT m68k-atari-mint GCC toolchain** as the canonical TOS application compiler. The Debian container consumes the official Linux cross-tool archives published by Thorsten Otto's FreeMiNT cross-tools distribution. The package set is pinned to dated archive names so CI is reproducible and does not depend on Ubuntu/PPA packaging. citeturn7search0turn10search0
 
 The resulting toolchain provides the `m68k-atari-mint-gcc` target used for Atari ST/TOS software. FreeMiNT maintains the corresponding GCC and binutils projects. citeturn2search1turn2search4
 
