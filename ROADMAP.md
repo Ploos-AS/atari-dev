@@ -4,7 +4,7 @@
 
 ## M1 — Generic 68000 toolchain baseline — PASS
 
-## M2 — TOS application toolchain — IMPLEMENTED / CI PENDING
+## M2 — TOS application toolchain — PASS
 
 - FreeMiNT m68k-atari-mint GCC
 - Linux-native container installation
@@ -13,7 +13,7 @@
 - artifact hand-off to atari-runtime
 - third-party licences preserved
 
-M2 becomes PASS after the GitHub runner successfully builds `HELLO.TOS`.
+GitHub Actions run `35371308264` successfully built and uploaded `build/HELLO.TOS` on 2026-09-18.
 
 ## M3 — Consumer integration
 
