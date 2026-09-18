@@ -27,7 +27,7 @@ RUN set -eux; \
 # supplementary tool set from the official FreeMiNT source instead.
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends git build-essential autoconf automake; \
+    apt-get install -y --no-install-recommends git build-essential autoconf automake texinfo; \
     git clone https://github.com/freemint/mintbin.git /tmp/mintbin; \
     git -C /tmp/mintbin checkout 536a0419562ffe9352715fe8e6bbea842b593735; \
     mkdir -p /tmp/mintbin-build; \
