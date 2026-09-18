@@ -4,48 +4,37 @@ Standard containerized Atari 68k development environment for Ploos-AS projects.
 
 ## Purpose
 
-`atari-dev` is the canonical build and tooling environment for Atari ST-family software projects. Individual repositories should consume this environment instead of maintaining their own compiler bootstrap.
+`atari-dev` is the canonical build and tooling environment for Atari ST-family software projects.
 
-M1 establishes a reproducible cross-toolchain based on Debian's `m68k-linux-gnu` binutils/GCC packages and a freestanding 68000 smoke artifact. The smoke artifact deliberately has no TOS dependency; TOS/GEM SDK integration is reserved for M2 so we do not pretend a Linux ABI cross-compiler is itself a complete Atari SDK.
+M2 adopts the **m68k-atari-mint** ABI/toolchain family as the canonical Atari application target. This is the established GCC target used to produce TOS executables such as `.PRG`, `.TOS` and `.TTP`. The toolchain is built from source by the container build; Atari TOS ROM images are neither required for compilation nor distributed here.
 
-## M1 usage
+## Milestones
 
-Build the container:
+- **M0 — Foundation — PASS**
+- **M1 — generic 68000 cross-toolchain baseline — PASS**
+- **M2 — TOS application toolchain contract — IMPLEMENTED / CI qualification pending**
 
-```sh
-docker build -t atari-dev:m1 -f Containerfile .
+## M2 contract
+
+Canonical compiler prefix:
+
+```
+m68k-atari-mint-
 ```
 
-Inspect toolchain metadata:
+The M2 qualification program is a console TOS application and must produce `build/HELLO.TOS`. Consumer Atari projects should build inside this environment rather than install private cross-toolchains.
 
-```sh
-docker run --rm atari-dev:m1 tools/toolchain-info.sh
-```
-
-Build and validate the 68000 smoke artifact:
-
-```sh
-docker run --rm -v "$PWD:/work" atari-dev:m1 make check
-```
-
-The output `build/m68k-smoke.elf` is a freestanding Motorola 68000 ELF used to prove the compiler/linker baseline. M2 will add a TOS-native application contract suitable for execution by `atari-runtime`.
+The container pins the cross-toolchain source repository to an explicit revision through `MINT_TOOLCHAIN_REF`. Updating that revision is an intentional infrastructure change.
 
 ## Relationship to atari-runtime
 
-Use `atari-dev` to build artifacts. Use [Ploos-AS/atari-runtime](https://github.com/Ploos-AS/atari-runtime) to execute and qualify Atari-native artifacts under emulation.
+`atari-dev` builds the TOS artifact. [Ploos-AS/atari-runtime](https://github.com/Ploos-AS/atari-runtime) executes the same artifact with Hatari.
 
-No proprietary Atari ROM/TOS images belong in this repository or its container image.
+Compilation and CI do not require proprietary Atari material. Runtime qualification can use a user-supplied legal TOS image; later we can additionally qualify against a redistributable open TOS implementation where appropriate.
 
 ## Ploos-AS standards
 
-- Software, ROM and firmware: MIT by default unless an inherited licence applies.
-- Documentation and educational material: CC BY-SA 4.0 by default unless an inherited licence applies.
-- Documentation source: Markdown, with `Ploos-AS/Documentation-Tools` used where applicable.
-
-## Status
-
-**M0 — Foundation — PASS**
-
-**M1 — Toolchain baseline — PASS (static/repository qualification)**
-
-The cross-toolchain, metadata probe, 68000 smoke build and GitHub Actions qualification are defined. A TOS-native SDK/application is intentionally M2 scope.
+- Software, ROM and firmware: MIT by default unless inherited licensing applies.
+- Documentation and educational material: CC BY-SA 4.0 by default.
+- Markdown is canonical documentation source.
+- Proprietary TOS/ROM images must not be committed or embedded in the container.
