@@ -5,8 +5,6 @@ ARG BASE_URL=https://tho-otto.de/download/mint
 ARG BINUTILS=binutils-2.45-mintelf-20250812-bin-linux64.tar.xz
 ARG GCC=gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz
 ARG MINTBIN=mintbin-0.4-mintelf-bin-linux64.tar.xz
-ARG MINTLIB=mintlib-0.60.1-mintelf.tar.xz
-ARG FDLIBM=fdlibm-20240425-mintelf.tar.xz
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl file make xz-utils tar \
@@ -17,12 +15,23 @@ WORKDIR /tmp
 # FreeMiNT Linux m68k-atari-mintelf toolchain. The dated binutils/GCC
 # archive names are the published Linux artifacts used by Atari ST tooling.
 RUN set -eux; \
-    for pkg in "$BINUTILS" "$GCC" "$MINTBIN" "$MINTLIB" "$FDLIBM"; do \
+    for pkg in "$BINUTILS" "$GCC"; do \
       echo "Fetching $pkg"; \
       curl --fail --location --show-error --silent -o "$pkg" "$BASE_URL/$pkg"; \
       tar -C / -xJf "$pkg"; \
       rm -f "$pkg"; \
     done
+
+# MiNTBin's published page confirms the Linux artifact name, but its
+# historical direct archive route is not stable. Build this small
+# supplementary tool set from the official FreeMiNT source instead.
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends git build-essential autoconf automake; \
+    git clone --depth 1 --branch mintbin-0_4 https://github.com/freemint/mintbin.git /tmp/mintbin; \
+    make -C /tmp/mintbin; \
+    make -C /tmp/mintbin install PREFIX=/usr/m68k-atari-mintelf; \
+    rm -rf /tmp/mintbin /var/lib/apt/lists/*
 
 ENV PATH="/usr/m68k-atari-mintelf/bin:/usr/m68k-atari-mintelf/usr/bin:${PATH}"
 
