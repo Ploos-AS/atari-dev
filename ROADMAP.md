@@ -1,26 +1,28 @@
 # Roadmap
 
-## M0 — Foundation
+## M0 — Foundation — PASS
 
 - repository baseline
 - MIT software licence
 - container skeleton
 - dev/runtime separation
 - documented Ploos-AS standards
-- initial CI/build smoke test
 
-## M1 — Toolchain
+## M1 — Toolchain baseline — PASS
 
-- add and pin the canonical m68k Atari cross-toolchain
-- verify hello-world style TOS program build
-- expose toolchain version metadata
-- add reusable CI invocation
+- Debian 13 m68k cross GCC/binutils baseline
+- explicit `-m68000` smoke build
+- freestanding 68000 ELF qualification artifact
+- toolchain version metadata helper
+- GitHub Actions build/check workflow
+- no proprietary Atari material
 
-## M2 — SDK and project integration
+## M2 — TOS SDK and project integration
 
-- common Atari headers/libraries where licensing permits
-- project templates
-- consumer-repository integration contract
+- select and pin a legally redistributable TOS/GEM development SDK/toolchain
+- build a real TOS `.PRG` qualification program
+- project template and consumer contract
+- hand the same artifact to `atari-runtime`
 
 ## M3 — Extended targets
 
