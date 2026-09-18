@@ -1,11 +1,11 @@
 FROM debian:13-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG BINUTILS_VERSION=2.45
-ARG GCC_VERSION=15.2.0
-ARG MINTBIN_VERSION=0.4
-ARG MINTLIB_VERSION=0.60.1
-ARG FDlibm_VERSION=20240425
+ARG BINUTILS=binutils-2.45-mint-20250812-bin-linux64.tar.xz
+ARG GCC=gcc-15.2.0-mint-20250810-bin-linux64.tar.xz
+ARG MINTBIN=mintbin-0.4-mint-20230911-bin-linux64.tar.xz
+ARG MINTLIB=mintlib-0.60.1-mint.tar.xz
+ARG FDLIBM=fdlibm-20240425-mint.tar.xz
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates curl file make xz-utils tar \
@@ -13,19 +13,13 @@ RUN apt-get update \
 
 WORKDIR /tmp
 
-# Official prebuilt Linux cross-tools from the FreeMiNT/Thomas Otto distribution.
-# They are host Linux binaries and install into /usr/m68k-atari-mint and
-# /usr/lib/gcc/m68k-atari-mint. No Ubuntu/PPA dependency is used.
+# Official FreeMiNT/Thomas Otto Linux cross-tool packages.
+# These are Linux host binaries, not Ubuntu/PPA packages.
 RUN set -eux; \
-    for pkg in \
-      "binutils-${BINUTILS_VERSION}-mint-bin-linux64.tar.xz" \
-      "gcc-${GCC_VERSION}-mint-bin-linux64.tar.xz" \
-      "mintbin-${MINTBIN_VERSION}-mint-bin-linux64.tar.xz" \
-      "mintlib-${MINTLIB_VERSION}-mint.tar.xz" \
-      "fdlibm-${FDlibm_VERSION}-mint.tar.xz"; do \
-        curl -fsSLO "https://tho-otto.de/download/mint/$pkg"; \
-        tar -C / -xJf "$pkg"; \
-        rm -f "$pkg"; \
+    for pkg in "$BINUTILS" "$GCC" "$MINTBIN" "$MINTLIB" "$FDLIBM"; do \
+      curl -fsSLO "https://tho-otto.de/download/mint/$pkg"; \
+      tar -C / -xJf "$pkg"; \
+      rm -f "$pkg"; \
     done
 
 ENV PATH="/usr/m68k-atari-mint/bin:/usr/m68k-atari-mint/usr/bin:${PATH}"
