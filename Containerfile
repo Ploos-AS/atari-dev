@@ -28,7 +28,8 @@ RUN set -eux; \
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends git build-essential autoconf automake; \
-    git clone --depth 1 --branch mintbin-0_4 https://github.com/freemint/mintbin.git /tmp/mintbin; \
+    git clone https://github.com/freemint/mintbin.git /tmp/mintbin; \
+    git -C /tmp/mintbin checkout 536a0419562ffe9352715fe8e6bbea842b593735; \
     make -C /tmp/mintbin; \
     make -C /tmp/mintbin install PREFIX=/usr/m68k-atari-mintelf; \
     rm -rf /tmp/mintbin /var/lib/apt/lists/*
