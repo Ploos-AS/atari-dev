@@ -17,6 +17,7 @@ WORKDIR /tmp
 # These are Linux host binaries, not Ubuntu/PPA packages.
 RUN set -eux; \
     for pkg in "$BINUTILS" "$GCC" "$MINTBIN" "$MINTLIB" "$FDLIBM"; do \
+      echo "Fetching $pkg"; \
       curl -fsSLO "https://tho-otto.de/download/mint/$pkg"; \
       tar -C / -xJf "$pkg"; \
       rm -f "$pkg"; \
