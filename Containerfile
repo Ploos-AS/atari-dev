@@ -30,8 +30,11 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends git build-essential autoconf automake; \
     git clone https://github.com/freemint/mintbin.git /tmp/mintbin; \
     git -C /tmp/mintbin checkout 536a0419562ffe9352715fe8e6bbea842b593735; \
-    make -C /tmp/mintbin; \
-    make -C /tmp/mintbin install PREFIX=/usr/m68k-atari-mintelf; \
+    mkdir -p /tmp/mintbin-build; \
+    cd /tmp/mintbin-build; \
+    /tmp/mintbin/configure --prefix=/usr/m68k-atari-mintelf; \
+    make; \
+    make install; \
     rm -rf /tmp/mintbin /var/lib/apt/lists/*
 
 ENV PATH="/usr/m68k-atari-mintelf/bin:/usr/m68k-atari-mintelf/usr/bin:${PATH}"
