@@ -1,9 +1,9 @@
 FROM debian:13-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG BINUTILS=binutils-2.45-mint-20250812-bin-linux64.tar.xz
-ARG GCC=gcc-15.2.0-mint-20250810-bin-linux64.tar.xz
-ARG MINTBIN=mintbin-0.4-mint-20230911-bin-linux64.tar.xz
+ARG BINUTILS=binutils-2.45-mintelf-20250812-bin-linux64.tar.xz
+ARG GCC=gcc-15.2.0-mint-bin-linux64.tar.xz
+ARG MINTBIN=mintbin-0.4-mint-bin-linux64.tar.xz
 ARG MINTLIB=mintlib-0.60.1-mint.tar.xz
 ARG FDLIBM=fdlibm-20240425-mint.tar.xz
 
