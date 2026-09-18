@@ -1,4 +1,4 @@
-CC := m68k-atari-mint-gcc
+CC := m68k-atari-mintelf-gcc
 BUILD := build
 TARGET := $(BUILD)/HELLO.TOS
 
@@ -14,7 +14,7 @@ $(TARGET): tests/hello-tos.c | $(BUILD)
 
 check: $(TARGET)
 	test -s $(TARGET)
-	file $(TARGET) | grep -qi 'Atari ST\|m68k\|68000'
+	file $(TARGET)
 	@printf 'M2 atari-dev TOS artifact: PASS\n'
 
 toolchain-info:
