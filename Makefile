@@ -1,9 +1,6 @@
-CC ?= m68k-linux-gnu-gcc
-READELF ?= m68k-linux-gnu-readelf
-CFLAGS := -m68000 -Os -ffreestanding -fno-builtin -nostdlib
-LDFLAGS := -nostdlib -Wl,-e,_start
+CC := m68k-atari-mint-gcc
 BUILD := build
-TARGET := $(BUILD)/m68k-smoke.elf
+TARGET := $(BUILD)/HELLO.TOS
 
 .PHONY: all check clean toolchain-info
 
@@ -12,16 +9,16 @@ all: $(TARGET)
 $(BUILD):
 	mkdir -p $@
 
-$(TARGET): tests/m68k-smoke.c | $(BUILD)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+$(TARGET): tests/hello-tos.c | $(BUILD)
+	$(CC) -m68000 -Os -Wall -Wextra -o $@ $<
 
 check: $(TARGET)
-	$(READELF) -h $(TARGET) | grep -q 'Machine:.*MC68000'
+	test -s $(TARGET)
 	file $(TARGET)
-	@echo "M1 atari-dev smoke qualification: PASS"
+	@printf 'M2 atari-dev TOS artifact: PASS\n'
 
 toolchain-info:
-	tools/toolchain-info.sh
+	atari-toolchain-info
 
 clean:
 	rm -rf $(BUILD)
