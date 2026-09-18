@@ -4,7 +4,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG BASE_URL=https://tho-otto.de/download/mint
 ARG BINUTILS=binutils-2.45-mintelf-20250812-bin-linux64.tar.xz
 ARG GCC=gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz
-ARG MINTBIN=mintbin-0.4-mintelf-bin-linux64.tar.xz
 ARG MINTLIB_URL=https://atari.joska.no/snapshots/mintlib/mintlib-mintelf-latest.tar.bz2
 
 RUN apt-get update \
@@ -43,22 +42,10 @@ RUN set -eux; \
 # mintelf snapshot; install it into the cross-toolchain prefix.
 RUN set -eux; \
     curl --fail --location --show-error --silent -o /tmp/mintlib.tar.bz2 "$MINTLIB_URL"; \
-    echo "MiNTLib archive layout:"; \
-    tar -tjf /tmp/mintlib.tar.bz2 | head -n 80; \
-    mkdir -p /tmp/mintlib-extract; \
-    tar -C /tmp/mintlib-extract -xjf /tmp/mintlib.tar.bz2; \
-    echo "MiNTLib extracted directories:"; \
-    find /tmp/mintlib-extract -maxdepth 4 -type d | sort | head -n 100; \
-    echo "stdio.h locations:"; \
-    find /tmp/mintlib-extract -name stdio.h -print; \
     mkdir -p /usr/m68k-atari-mintelf/sys-root; \
-    cp -a /tmp/mintlib-extract/. /usr/m68k-atari-mintelf/sys-root/; \
+    tar -C /usr/m68k-atari-mintelf/sys-root -xjf /tmp/mintlib.tar.bz2; \
     test -f /usr/m68k-atari-mintelf/sys-root/usr/include/stdio.h; \
-    echo "GCC sysroot: $(m68k-atari-mintelf-gcc -print-sysroot)"; \
-    echo "GCC search dirs:"; m68k-atari-mintelf-gcc -print-search-dirs; \
-    printf "" | m68k-atari-mintelf-gcc -m68000 -v -E -x c - >/tmp/gcc-preprocess.out 2>/tmp/gcc-preprocess.err || true; \
-    cat /tmp/gcc-preprocess.err; \
-    rm -rf /tmp/mintlib.tar.bz2 /tmp/mintlib-extract /tmp/gcc-preprocess.out /tmp/gcc-preprocess.err
+    rm -f /tmp/mintlib.tar.bz2
 
 ENV PATH="/usr/m68k-atari-mintelf/bin:/usr/m68k-atari-mintelf/usr/bin:${PATH}"
 
