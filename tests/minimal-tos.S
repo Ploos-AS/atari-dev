@@ -1,6 +1,6 @@
         .text
-        .globl  _main
-_main:
+        .globl  _start
+_start:
         /* GEMDOS Fcreate("C:\\MINPASS.TXT", 0) */
         clr.w   -(%sp)
         pea     marker_name
