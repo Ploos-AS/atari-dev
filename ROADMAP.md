@@ -1,31 +1,31 @@
 # Roadmap
 
 ## M0 — Foundation — PASS
-
 - repository baseline
 - MIT software licence
 - container skeleton
 - dev/runtime separation
-- documented Ploos-AS standards
 
 ## M1 — Toolchain baseline — PASS
+- generic Debian m68k GCC/binutils
+- explicit 68000 smoke artifact
+- GitHub Actions qualification
 
-- Debian 13 m68k cross GCC/binutils baseline
-- explicit `-m68000` smoke build
-- freestanding 68000 ELF qualification artifact
-- toolchain version metadata helper
-- GitHub Actions build/check workflow
-- no proprietary Atari material
+## M2 — TOS SDK and project integration — IMPLEMENTED / CI PENDING
+- canonical `m68k-atari-mint` toolchain contract
+- source-built and revision-pinned toolchain
+- real TOS executable qualification artifact
+- artifact exported from GitHub Actions
+- runtime hand-off contract
 
-## M2 — TOS SDK and project integration
+M2 is PASS only after the GitHub runner has built the container and produced a valid `HELLO.TOS` artifact.
 
-- select and pin a legally redistributable TOS/GEM development SDK/toolchain
-- build a real TOS `.PRG` qualification program
-- project template and consumer contract
-- hand the same artifact to `atari-runtime`
+## M3 — Consumer integration
+- reusable consumer workflow
+- project template
+- ST/STE application qualification matrix
+- align with atari-runtime evidence format
 
-## M3 — Extended targets
-
-- ST/STE baseline qualification
-- evaluate TT/Falcon support
-- align runtime matrices with `atari-runtime`
+## M4 — Extended targets
+- evaluate TT/Falcon
+- cross-emulator qualification
