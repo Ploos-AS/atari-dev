@@ -35,7 +35,7 @@ PROBE := $(BUILD)/MINIMAL.PRG
 
 $(PROBE): tests/minimal-tos.S | $(BUILD)
 	$(AS) -m68000 -o $(BUILD)/minimal-tos.o $<
-	$(LD) -o $@ $(BUILD)/minimal-tos.o
+	$(LD) -e _start -o $@ $(BUILD)/minimal-tos.o
 
 probe: $(PROBE)
 	file $(PROBE)
