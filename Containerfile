@@ -1,29 +1,26 @@
-FROM debian:13-slim
+FROM debian:13-slim AS toolchain
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG MINT_TOOLCHAIN_REPO=https://github.com/pd95/m68k-atari-mint-cross-tools.git
+ARG MINT_TOOLCHAIN_REF=master
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       binutils-m68k-linux-gnu \
-       build-essential \
-       ca-certificates \
-       cmake \
-       file \
-       gcc-m68k-linux-gnu \
-       git \
-       make \
-       ninja-build \
-       pkg-config \
-       python3 \
-       xz-utils \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf automake bison build-essential ca-certificates curl flex git \
+    libgmp-dev libmpc-dev libmpfr-dev libtool lzip make patch pkg-config \
+    python3 texinfo wget xz-utils && rm -rf /var/lib/apt/lists/*
 
+RUN git clone "$MINT_TOOLCHAIN_REPO" /src/mint \
+ && cd /src/mint \
+ && git checkout "$MINT_TOOLCHAIN_REF" \
+ && make PREFIX=/opt/cross-mint all
+
+FROM debian:13-slim
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates file make \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=toolchain /opt/cross-mint /opt/cross-mint
+ENV PATH="/opt/cross-mint/bin:${PATH}"
 WORKDIR /work
-
 COPY tools/toolchain-info.sh /usr/local/bin/atari-toolchain-info
 RUN chmod +x /usr/local/bin/atari-toolchain-info
-
-LABEL org.opencontainers.image.source="https://github.com/Ploos-AS/atari-dev" \
-      org.opencontainers.image.description="Ploos-AS standard Atari 68k development environment"
-
-CMD ["/bin/bash"]
+LABEL org.opencontainers.image.source="https://github.com/Ploos-AS/atari-dev"
+CMD ["/bin/sh"]
