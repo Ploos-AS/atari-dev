@@ -15,7 +15,7 @@ jobs:
       - name: Toolchain metadata
         run: docker run --rm atari-dev:m2 atari-toolchain-info
       - name: Build TOS and PRG qualification artifacts
-        run: docker run --rm -v "$PWD:/work" atari-dev:m2 make clean check
+        run: docker run --rm -v "$PWD:/work" atari-dev:m2 sh -c 'make clean check && make probe'
       - name: Upload Atari artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -23,4 +23,5 @@ jobs:
           path: |
             build/HELLO.TOS
             build/HELLO.PRG
+            build/MINIMAL.PRG
           if-no-files-found: error
