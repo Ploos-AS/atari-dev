@@ -14,11 +14,13 @@ jobs:
         run: docker build -t atari-dev:m2 -f Containerfile .
       - name: Toolchain metadata
         run: docker run --rm atari-dev:m2 atari-toolchain-info
-      - name: Build TOS qualification artifact
+      - name: Build TOS and PRG qualification artifacts
         run: docker run --rm -v "$PWD:/work" atari-dev:m2 make clean check
-      - name: Upload TOS artifact
+      - name: Upload Atari artifacts
         uses: actions/upload-artifact@v4
         with:
           name: atari-dev-m2-tos
-          path: build/HELLO.TOS
+          path: |
+            build/HELLO.TOS
+            build/HELLO.PRG
           if-no-files-found: error
