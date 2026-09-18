@@ -39,5 +39,5 @@ $(PROBE): tests/minimal-tos.S | $(BUILD)
 
 probe: $(PROBE)
 	file $(PROBE)
-	@test $(stat -c %s $(PROBE)) -lt 4096
+	@test `wc -c < $(PROBE)` -lt 4096
 	@printf 'Raw minimal Atari runtime probe (<4 KiB): PASS\n'
