@@ -1,4 +1,6 @@
 CC := m68k-atari-mintelf-gcc
+AS := m68k-atari-mintelf-as
+LD := m68k-atari-mintelf-ld
 BUILD := build
 TOS_TARGET := $(BUILD)/HELLO.TOS
 PRG_TARGET := $(BUILD)/HELLO.PRG
@@ -32,8 +34,10 @@ clean:
 PROBE := $(BUILD)/MINIMAL.PRG
 
 $(PROBE): tests/minimal-tos.S | $(BUILD)
-	$(CC) -m68000 -Os -o $@ $<
+	$(AS) -m68000 -o $(BUILD)/minimal-tos.o $<
+	$(LD) -o $@ $(BUILD)/minimal-tos.o
 
 probe: $(PROBE)
 	file $(PROBE)
-	@printf 'Minimal Atari runtime probe: PASS\n'
+	@test $(stat -c %s $(PROBE)) -lt 4096
+	@printf 'Raw minimal Atari runtime probe (<4 KiB): PASS\n'
