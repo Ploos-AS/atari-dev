@@ -29,12 +29,15 @@ _start:
         tst.l   %d0
         bmi.s   fail
 
-        moveq   #0,%d0
-        rts
+        /* GEMDOS Pterm0(): terminate cleanly instead of relying on a CRT caller. */
+        clr.w   -(%sp)
+        trap    #1
 
 fail:
-        moveq   #1,%d0
-        rts
+        /* GEMDOS Pterm(1): function 0x4c, exit status 1. */
+        move.w  #1,-(%sp)
+        move.w  #76,-(%sp)
+        trap    #1
 
         .data
 marker_name:
