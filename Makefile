@@ -35,8 +35,7 @@ PROBE := $(BUILD)/MINIMAL.PRG
 
 $(PROBE): tests/minimal-tos.S | $(BUILD)
 	$(AS) -m68000 -o $(BUILD)/minimal-tos.o $<
-	$(LD) -e _start -o $(BUILD)/minimal-tos.elf $(BUILD)/minimal-tos.o
-	m68k-atari-mintelf-objcopy -O mint $(BUILD)/minimal-tos.elf $@
+	$(CC) -m68000 -nostdlib -Wl,-e,_start -o $@ $(BUILD)/minimal-tos.o
 
 probe: $(PROBE)
 	file $(PROBE)
