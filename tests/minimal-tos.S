@@ -4,7 +4,7 @@ _start:
         /* GEMDOS Fcreate("C:\\MINPASS.TXT", 0) */
         clr.w   -(%sp)
         pea     marker_name
-        move.w  #60,-(%sp)
+        move.w  #0x3c,-(%sp)
         trap    #1
         addq.l  #8,%sp
         tst.l   %d0
@@ -15,7 +15,7 @@ _start:
         pea     marker_text
         move.l  #marker_len,-(%sp)
         move.w  %d2,-(%sp)
-        move.w  #64,-(%sp)
+        move.w  #0x40,-(%sp)
         trap    #1
         lea     12(%sp),%sp
         cmp.l   #marker_len,%d0
@@ -23,7 +23,7 @@ _start:
 
         /* GEMDOS Fclose(handle) */
         move.w  %d2,-(%sp)
-        move.w  #62,-(%sp)
+        move.w  #0x3e,-(%sp)
         trap    #1
         addq.l  #4,%sp
         tst.l   %d0
@@ -36,7 +36,7 @@ _start:
 fail:
         /* GEMDOS Pterm(1): function 0x4c, exit status 1. */
         move.w  #1,-(%sp)
-        move.w  #76,-(%sp)
+        move.w  #0x4c,-(%sp)
         trap    #1
 
         .data
