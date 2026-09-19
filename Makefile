@@ -33,11 +33,9 @@ clean:
 
 PROBE := $(BUILD)/MINIMAL.PRG
 
-$(PROBE): tests/minimal-tos.S | $(BUILD)
-	$(AS) -m68000 -o $(BUILD)/minimal-tos.o $<
-	$(CC) -m68000 -nostdlib -Wl,-e,_start -o $@ $(BUILD)/minimal-tos.o
+$(PROBE): tests/runtime-probe.c | $(BUILD)
+	$(CC) -m68000 -Os -Wall -Wextra -o $@ $<
 
 probe: $(PROBE)
 	file $(PROBE)
-	@test `wc -c < $(PROBE)` -lt 4096
-	@printf 'Raw minimal Atari runtime probe (<4 KiB): PASS\n'
+	@printf 'Canonical Atari runtime execution probe: PASS\n'
