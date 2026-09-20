@@ -4,7 +4,7 @@ int main(void)
 {
     static const char marker[] =
         "Ploos-AS atari-runtime minimal GEMDOS execution PASS\n";
-    FILE *fp = fopen("C:\\MINPASS.TXT", "w");
+    FILE *fp = fopen("MINPASS.TXT", "w");
 
     if (fp == NULL) {
         return 2;
