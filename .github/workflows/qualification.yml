@@ -25,3 +25,14 @@ jobs:
             build/HELLO.PRG
             build/MINIMAL.PRG
           if-no-files-found: error
+
+  runtime-v1:
+    needs: m2
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [st, ste]
+    uses: Ploos-AS/atari-runtime/.github/workflows/reusable-qualification.yml@v1
+    with:
+      artifact-name: atari-dev-m2-tos
+      profile: ${{ matrix.profile }}

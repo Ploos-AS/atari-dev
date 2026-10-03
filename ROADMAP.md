@@ -15,8 +15,9 @@
 
 GitHub Actions run `35371308264` successfully built and uploaded `build/HELLO.TOS` on 2026-09-18.
 
-## M3 — Consumer integration
+## M3 — Consumer integration — IN PROGRESS
 
+- stable `atari-runtime@v1` reusable qualification for ST/STE
 - reusable consumer workflow
 - ST/STE matrix
 - standard artifact metadata
