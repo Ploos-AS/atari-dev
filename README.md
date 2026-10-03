@@ -30,7 +30,10 @@ Documentation follows CC BY-SA 4.0 where applicable.
 - M0 — Foundation — PASS
 - M1 — 68000 toolchain baseline — PASS
 - M2 — TOS application toolchain — **PASS**
+- M3 — stable runtime consumer baseline — **PASS / PAUSED**
 
 ## Runtime qualification
 
 CI hands the canonical `MINIMAL.PRG` artifact to the stable `Ploos-AS/atari-runtime` v1 reusable workflow. ST and STE qualification therefore executes the development artifact through the versioned runtime contract rather than depending on `atari-runtime` main.
+
+Development is intentionally paused at the stable ST/STE consumer checkpoint. Existing CI remains active so the `atari-runtime@v1` integration continues to guard the baseline.
